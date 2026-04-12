@@ -6,8 +6,6 @@ env/
 # Credenciais e Segredos
 .env
 
-# Arquivos de estado local
-notas_anteriores.json
 
 # Debug e Temporários
 __pycache__/
