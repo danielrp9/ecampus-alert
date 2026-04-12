@@ -29,6 +29,8 @@ jobs:
 
       - name: Executar Monitor
         env:
+          # Ajusta o fuso horário para o Brasil (Brasília)
+          TZ: 'America/Sao_Paulo'
           # Estas variáveis devem ser configuradas nos "Secrets" do seu repositório
           ECAMPUS_USER: ${{ secrets.ECAMPUS_USER }}
           ECAMPUS_PASS: ${{ secrets.ECAMPUS_PASS }}
