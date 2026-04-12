@@ -23,7 +23,6 @@ URL_NOTAS = "https://ecampus.ufvjm.edu.br/index.php?module=ensino&action=main:qu
 def parse_avaliacoes(texto_bruto):
     """Transforma a string bruta em uma lista de dicionários (colunas)."""
     # Regex para capturar linhas que parecem avaliações (Nome Data Peso Aprov Nota)
-    # Ex: Prova 1 09/04/2026 20% 90% 18
     padrao = r"(.+?)\s+(\d{2}/\d{2}/\d{4})\s+(\d+[\d,]*%)\s*(\d+[\d,]*%)?\s*(\d+[\d,]*|--)"
     matches = re.findall(padrao, texto_bruto)
     
@@ -118,6 +117,7 @@ def enviar_email_html_estruturado(dados_atuais):
 
 def extrair_notas():
     with sync_playwright() as p:
+        # Mantido headless=True para rodar no GitHub
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
         try:
@@ -140,9 +140,15 @@ def extrair_notas():
                 
                 id_detalhe = f"#detail{i}"
                 page.wait_for_selector(id_detalhe)
-                time.sleep(1.5) # Garantia para o AJAX
+                time.sleep(1.5)
                 
-                dados[nome] = page.locator(id_detalhe).inner_text().strip()
+                texto_bruto = page.locator(id_detalhe).inner_text().strip()
+                
+                # --- CORREÇÃO: Limpeza do timestamp de atualização ---
+                # Remove a linha que contém "Atualização detectada em..." para evitar falsos positivos
+                texto_sanitizado = re.sub(r"Atualização detectada em.*", "", texto_bruto).strip()
+                
+                dados[nome] = texto_sanitizado
                 print(f"   [Verificado] {nome}")
 
             browser.close()
@@ -165,11 +171,12 @@ def monitorar():
         dados_anteriores = {}
 
     if dados_atuais != dados_anteriores:
+        print("📢 Mudança real detectada! Enviando notificação...")
         enviar_email_html_estruturado(dados_atuais)
         with open(arquivo_db, "w", encoding="utf-8") as f:
             json.dump(dados_atuais, f, ensure_ascii=False, indent=4)
     else:
-        print("😴 Sem novidades.")
+        print("😴 Sem novidades reais (apenas o timestamp mudou).")
 
 if __name__ == "__main__":
     monitorar()
