@@ -1,0 +1,46 @@
+name: Monitor de Notas e-Campus
+
+on:
+  schedule:
+    # Roda todo dia, de hora em hora (no minuto 0)
+    - cron: '0 * * * *'
+  workflow_dispatch:      # Permite rodar manualmente clicando no botão no GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Permite que o GitHub Action salve o arquivo JSON de volta no repositório
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependências
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium --with-deps
+
+      - name: Executar Monitor
+        env:
+          # Estas variáveis devem ser configuradas nos "Secrets" do seu repositório
+          ECAMPUS_USER: ${{ secrets.ECAMPUS_USER }}
+          ECAMPUS_PASS: ${{ secrets.ECAMPUS_PASS }}
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+        run: python main.py
+
+      - name: Salvar histórico de notas (JSON)
+        run: |
+          git config --global user.name 'GitHub Action Bot'
+          git config --global user.email 'action@github.com'
+          # Tenta adicionar o arquivo. Se não houver mudanças, o script continua.
+          git add notas_anteriores.json || echo "Sem mudanças no arquivo JSON"
+          git commit -m "Auto-update: Sincronização de notas [skip ci]" || echo "Nada para commitar"
+          git push || echo "Sem alterações para subir"
