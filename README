@@ -1,12 +1,9 @@
-# 🎓 e-Campus Alert Bot (UFVJM)
+# e-Campus Alert Bot (UFVJM)
 
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Playwright](https://img.shields.io/badge/playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 
 Aplicação desenvolvida para automatizar o monitoramento de notas no portal **e-Campus (UFVJM)**. O bot realiza o login, extrai as notas parciais e envia notificações por e-mail sempre que uma nova atualização é detectada pelos docentes.
 
-## 📝 O Problema
+## O Problema
 O sistema acadêmico e-Campus não possui um serviço nativo de notificação (push ou e-mail) para o lançamento de notas. Isso gera uma necessidade de verificações manuais constantes por parte dos estudantes, especialmente em períodos de fechamento de semestre.
 
 ## 🚀 A Solução
@@ -23,7 +20,7 @@ Um bot de automação que utiliza **Web Scraping** para simular a navegação hu
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 * **Python 3.12**: Linguagem base.
 * **Playwright**: Automação de browser de alta performance.
@@ -33,7 +30,7 @@ Um bot de automação que utiliza **Web Scraping** para simular a navegação hu
 
 ---
 
-## ⚙️ Configuração do Ambiente
+## Configuração do Ambiente
 
 ### 1. Requisitos Locais
 ```bash
@@ -55,7 +52,7 @@ EMAIL_PASS=sua_senha_de_app_google
 
 ---
 
-## 🤖 Configuração no GitHub (Deploy)
+## Configuração no GitHub (Deploy)
 
 Para que o bot funcione no GitHub Actions, siga estes passos:
 
@@ -65,7 +62,7 @@ Para que o bot funcione no GitHub Actions, siga estes passos:
 
 ---
 
-## 📧 Exemplo de Notificação
+## Exemplo de Notificação
 O bot gera um e-mail com design responsivo, contendo uma tabela detalhada por disciplina:
 * **Nome da Avaliação**
 * **Data do Lançamento**
@@ -74,10 +71,5 @@ O bot gera um e-mail com design responsivo, contendo uma tabela detalhada por di
 * **Resultado Parcial Acumulado**
 
 ---
-
-## ⚖️ Licença
-Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
-
----
-**Desenvolvido por [Daniel Rodrigues]** 🚀
+**Desenvolvido por [Daniel Rodrigues]** 
 
