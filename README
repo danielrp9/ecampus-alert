@@ -1,38 +1,39 @@
 # e-Campus Alert Bot (UFVJM)
 
-
 Aplicação desenvolvida para automatizar o monitoramento de notas no portal **e-Campus (UFVJM)**. O bot realiza o login, extrai as notas parciais e envia notificações por e-mail sempre que uma nova atualização é detectada pelos docentes.
 
 ## O Problema
-O sistema acadêmico e-Campus não possui um serviço nativo de notificação (push ou e-mail) para o lançamento de notas. Isso gera uma necessidade de verificações manuais constantes por parte dos estudantes, especialmente em períodos de fechamento de semestre.
 
-## 🚀 A Solução
-Um bot de automação que utiliza **Web Scraping** para simular a navegação humana e **CI/CD** para rodar de forma persistente e gratuita na nuvem.
+O sistema acadêmico e-Campus não possui um serviço nativo de notificação (push ou e-mail) para o lançamento de notas. Isso gera a necessidade de verificações manuais constantes por parte dos estudantes, especialmente em períodos de fechamento de semestre.
 
-### Diferenciais Técnicos:
+## A Solução
+
+Um bot de automação que utiliza **Web Scraping** para simular a navegação humana e **CI/CD** para executar de forma persistente e gratuita na nuvem.
+
+### Diferenciais Técnicos
+
 * **Navegação Inteligente:** Utiliza **Playwright** para lidar com renderização dinâmica (AJAX) e expansão de tabelas no DOM.
-* **Data Parsing:** Motor baseado em **Regex** para sanitizar textos brutos e transformar em dados estruturados.
-* **State Tracking:** Sistema de persistência em JSON que evita notificações duplicadas (só envia e-mail se houver mudança real).
-* **Execução Serverless:** Configurado via **GitHub Actions** para rodar em ciclos de 1 hora (24/7) sem custo de infraestrutura.
-* **Segurança:** Gestão de credenciais via **GitHub Secrets**, garantindo que nenhum dado sensível fique exposto no código.
-
-
+* **Data Parsing:** Motor baseado em **Regex** para sanitizar textos brutos e transformá-los em dados estruturados.
+* **State Tracking:** Sistema de persistência em JSON que evita notificações duplicadas, enviando e-mails apenas quando há alterações reais.
+* **Execução Serverless:** Configurado via **GitHub Actions** para execução automática a cada hora, sem custos de infraestrutura.
+* **Segurança:** Gerenciamento de credenciais por meio de **GitHub Secrets**, evitando exposição de dados sensíveis.
 
 ---
 
 ## Tecnologias Utilizadas
 
-* **Python 3.12**: Linguagem base.
-* **Playwright**: Automação de browser de alta performance.
-* **GitHub Actions**: Orquestração e agendamento da automação.
-* **SMTPLib**: Protocolo para envio de e-mails via Gmail.
-* **Re (Regex)**: Extração e limpeza de padrões de texto.
+* **Python 3.12** — Linguagem principal.
+* **Playwright** — Automação de navegador.
+* **GitHub Actions** — Orquestração e agendamento da automação.
+* **smtplib** — Envio de e-mails via SMTP.
+* **re (Regex)** — Extração e tratamento de dados textuais.
 
 ---
 
 ## Configuração do Ambiente
 
-### 1. Requisitos Locais
+### Requisitos Locais
+
 ```bash
 # Instalar dependências
 pip install -r requirements.txt
@@ -41,35 +42,46 @@ pip install -r requirements.txt
 playwright install chromium --with-deps
 ```
 
-### 2. Variáveis de Ambiente (.env)
+### Variáveis de Ambiente
+
 Crie um arquivo `.env` na raiz do projeto:
+
 ```env
 ECAMPUS_USER=seu_usuario
 ECAMPUS_PASS=sua_senha
-EMAIL_USER=seu_gmail@gmail.com
-EMAIL_PASS=sua_senha_de_app_google
+EMAIL_USER=seu_email@gmail.com
+EMAIL_PASS=sua_senha_de_app
 ```
 
 ---
 
-## Configuração no GitHub (Deploy)
+## Configuração no GitHub
 
-Para que o bot funcione no GitHub Actions, siga estes passos:
+Para executar o bot via GitHub Actions:
 
-1.  **Secrets:** Vá em `Settings > Secrets and variables > Actions` e adicione as chaves do seu `.env`.
-2.  **Permissions:** Em `Settings > Actions > General`, habilite **"Read and write permissions"** (necessário para que o bot salve o histórico de notas no repositório).
-3.  **Cron:** O bot está configurado para rodar a cada hora via arquivo `.github/workflows/monitor.yml`.
+1. Acesse `Settings > Secrets and variables > Actions` e adicione as variáveis do arquivo `.env`.
+2. Em `Settings > Actions > General`, habilite `Read and write permissions`.
+3. O workflow está configurado para execução automática a cada hora por meio do arquivo:
+
+```text
+.github/workflows/monitor.yml
+```
 
 ---
 
 ## Exemplo de Notificação
-O bot gera um e-mail com design responsivo, contendo uma tabela detalhada por disciplina:
-* **Nome da Avaliação**
-* **Data do Lançamento**
-* **Peso da Atividade**
-* **Nota Obtida**
-* **Resultado Parcial Acumulado**
+
+O bot gera um e-mail responsivo contendo informações detalhadas sobre cada atualização detectada:
+
+* Nome da avaliação
+* Data do lançamento
+* Peso da atividade
+* Nota obtida
+* Resultado parcial acumulado
 
 ---
-**Desenvolvido por [Daniel Rodrigues]** 
+
+## Autor
+
+**Daniel Rodrigues**
 
